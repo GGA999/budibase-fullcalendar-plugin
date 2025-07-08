@@ -15,7 +15,7 @@
   export let mappingStart;
   export let mappingEnd;
   export let dataProvider;
-  export let mappingColor;
+  export let colorMapping;
   export let allday;
   export let typeColorMapping = [];
 
@@ -23,7 +23,6 @@
   export let headerOptionsCenter;
   export let headerOptionsEnd;
 
-  export let mappingType;
 
   let eventsList = [];
 
@@ -46,7 +45,7 @@ function buildEvents() {
         title: event[mappingTitle],
         start: event[mappingStart] || event[mappingDate],
         end: event[mappingEnd],
-        color: event[mappingColor] || '#313131', // prende il colore dalla colonna, fallback se mancante
+        color: event[colorMapping] || '#313131', // prende il colore dalla colonna, fallback se mancante
         allDay: allday,
         event
       });
