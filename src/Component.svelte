@@ -8,8 +8,7 @@
   import { onMount } from 'svelte';
   import { langs, codeLang } from './lang';
 
-  // Nuovo prop per il mapping dei tipi di evento con i colori
-  export let eventTypes = []; // [{ name: 'meeting', color: '#ff0000' }, ...]
+  export let eventTypes = [];
   export let language = 'en';
   export let calendarEvent = () => {};
 
@@ -26,8 +25,8 @@
   export let dataProvider = { rows: [] };
   export let dataProvider2 = { rows: [] };
 
-  export let mappingType = 'type'; // Nuovo: Associazione del tipo di evento
-  export let mappingType2 = 'type'; // Nuovo: Per il secondo dataProvider
+  export let mappingType = 'type';
+  export let mappingType2 = 'type';
 
   export let mappingColor = '#272727';
   export let mappingColor2 = '#272727';
@@ -41,55 +40,68 @@
 
   let eventsList = [];
   const safeGet = (obj, key, defaultValue) => obj?.[key] ?? defaultValue;
-  onMount(() => {
-    if (eventsList.length > 0) {
-      eventsList = [];
+onMount(() => {
+  if (eventsList.length > 0) {
+    eventsList = [];
+  }
+
+  const getEventColor = (type) => {
+    if (!type) type = 'default';
+    const typeObj = eventTypes.find((eventType) => eventType.name === type);
+    return typeObj ? typeObj.color : '#313131';
+  };
+
+  const fallbackEvents = [
+    {
+      title: "Sample Event",
+      date: "2023-12-03",
+      start: "2023-12-03T10:00:00",
+      end: "2023-12-03T12:00:00",
+      type: "default"
     }
+  ];
 
-    const getEventColor = (type) => {
-      if (!type) type = 'default'; // Fallback in caso il tipo non sia fornito
-      const typeObj = eventTypes.find((eventType) => eventType.name === type);
-      return typeObj ? typeObj.color : '#313131'; // Default se il tipo non è trovato
-    };
+  const processDataProvider = (dataProvider, mapping) => {
+    const rows = dataProvider?.rows?.length > 0 ? dataProvider.rows : fallbackEvents;
 
-    if (dataProvider?.rows?.length > 0) {
-      dataProvider.rows.forEach((event) => {
-        const eventType = safeGet(event, mappingType, 'default');
-        const eventColor =
-          getEventColor(eventType) || mappingColor || '#313131';
+    rows.forEach((event) => {
+      const eventType = safeGet(event, mapping.type, 'default');
+      const eventColor = getEventColor(eventType);
 
-        eventsList.push({
-          title: safeGet(event, mappingTitle, 'Untitled Event'),
-          date: safeGet(event, mappingDate, new Date().toISOString()),
-          start: safeGet(event, mappingStart, new Date().toISOString()),
-          end: safeGet(event, mappingEnd, new Date().toISOString()),
-          color: eventColor,
-          event: event,
-          allDay: allday ?? false,
-        });
+      eventsList.push({
+        title: safeGet(event, mapping.title, 'Untitled Event'),
+        date: safeGet(event, mapping.date, new Date().toISOString()),
+        start: safeGet(event, mapping.start, new Date().toISOString()),
+        end: safeGet(event, mapping.end, new Date().toISOString()),
+        color: eventColor,
+        event: event,
+        allDay: mapping.allDay ?? false,
       });
-    }
+    });
+  };
 
-    if (dataProvider2?.rows?.length > 0) {
-      dataProvider2.rows.forEach((event) => {
-        const eventType = safeGet(event, mappingType2, 'default');
-        const eventColor2 =
-          getEventColor(eventType) || mappingColor2 || '#eb4034';
-
-        eventsList.push({
-          title: safeGet(event, mappingTitle2, 'Untitled Event'),
-          date: safeGet(event, mappingDate2, new Date().toISOString()),
-          start: safeGet(event, mappingStart2, new Date().toISOString()),
-          end: safeGet(event, mappingEnd2, new Date().toISOString()),
-          color: eventColor2,
-          event: event,
-          allDay: allday2 ?? false,
-        });
-      });
-    }
-
-    eventsList = eventsList; // Trigger Svelte reattivity
+  processDataProvider(dataProvider, {
+    type: mappingType,
+    title: mappingTitle,
+    date: mappingDate,
+    start: mappingStart,
+    end: mappingEnd,
+    color: mappingColor,
+    allDay: allday
   });
+
+  processDataProvider(dataProvider2, {
+    type: mappingType2,
+    title: mappingTitle2,
+    date: mappingDate2,
+    start: mappingStart2,
+    end: mappingEnd2,
+    color: mappingColor2,
+    allDay: allday2
+  });
+
+  eventsList = eventsList;
+});
 
   let options = {
     headerToolbar: {
