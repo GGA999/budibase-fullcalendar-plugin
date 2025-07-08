@@ -25,7 +25,6 @@
 
   export let mappingType;
 
-
   let eventsList = [];
 
   function generateColorMap() {
@@ -39,25 +38,15 @@
   }
 
 function buildEvents() {
-  const colorMap = {};
-  (typeColorMapping || []).forEach(item => {
-    if (item?.type && item?.color) {
-      colorMap[item.type] = item.color;
-    }
-  });
-
   const newEvents = [];
 
   if (dataProvider?.rows) {
     dataProvider.rows.forEach(event => {
-      const type = event[mappingType];
-      const eventColor = colorMap[type] || mappingColor || '#313131';
-
       newEvents.push({
         title: event[mappingTitle],
         start: event[mappingStart] || event[mappingDate],
         end: event[mappingEnd],
-        color: eventColor,
+        color: event[mappingColor] || '#313131', // prende il colore dalla colonna, fallback se mancante
         allDay: allday,
         event
       });

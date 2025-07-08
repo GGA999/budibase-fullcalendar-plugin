@@ -1,6 +1,6 @@
 {
   "name": "budibase-fullcalendar",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "simple calendar component for budibase",
   "license": "MIT",
   "svelte": "index.js",

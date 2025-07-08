@@ -41,30 +41,6 @@
             "type": "boolean",
             "key": "allday",
             "label": "AllDay Mapping"
-          },
-          {
-            "type": "color",
-            "label": "Default Color Mapping",
-            "key": "mappingColor",
-            "defaultValue": "#272727"
-          },
-          {
-            "type": "array",
-            "key": "typeColorMapping",
-            "label": "Type Color Mapping",
-            "items": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "text",
-                  "label": "Type"
-                },
-                "color": {
-                  "type": "color",
-                  "label": "Color"
-                }
-              }
-            }
           }
         ]
       },
