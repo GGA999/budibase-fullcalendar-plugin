@@ -41,6 +41,11 @@
             "type": "boolean",
             "key": "allday",
             "label": "AllDay Mapping"
+          },
+          {
+            "type": "text",
+            "key": "colorMapping",
+            "label": "Color Mapping"
           }
         ]
       },
