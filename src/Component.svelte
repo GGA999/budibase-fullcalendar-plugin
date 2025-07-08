@@ -42,53 +42,53 @@
 
   let eventsList = [];
 
-  onMount(() => {
-    if (eventsList.length > 0) {
-      eventsList = [];
-    }
+onMount(() => {
+  if (eventsList.length > 0) {
+    eventsList = [];
+  }
 
-    // Funzione per trovare un colore in eventTypes
-    const getEventColor = (type) => {
-      const typeObj = eventTypes.find(eventType => eventType.name === type);
-      return typeObj ? typeObj.color : '#313131'; // Default se il tipo non è trovato
-    };
+  const getEventColor = (type) => {
+    // Trova il tipo e restituisci il colore associato
+    const typeObj = eventTypes.find(eventType => eventType.name === type);
+    return typeObj ? typeObj.color : '#313131'; // Default se il tipo non è trovato
+  };
 
-    if (dataProvider.rows) {
-      dataProvider.rows.forEach(event => {
-        const eventType = event[mappingType]; // Determiniamo il tipo di evento
-        const eventColor = getEventColor(eventType) || mappingColor || '#313131';
+  if (dataProvider.rows) {
+    dataProvider.rows.forEach(event => {
+      const eventType = event[mappingType]; // Determiniamo il tipo di evento
+      const eventColor = getEventColor(eventType) || mappingColor || '#313131';
 
-        eventsList.push({
-          title: event[mappingTitle],
-          date: event[mappingDate],
-          start: event[mappingStart],
-          end: event[mappingEnd],
-          color: eventColor,
-          event: event,
-          allDay: allday,
-        });
+      eventsList.push({
+        title: event[mappingTitle],
+        date: event[mappingDate],
+        start: event[mappingStart],
+        end: event[mappingEnd],
+        color: eventColor, // Usa il colore determinato dal tipo
+        event: event,
+        allDay: allday,
       });
-    }
+    });
+  }
 
-    if (dataProvider2.rows) {
-      dataProvider2.rows.forEach(event => {
-        const eventType = event[mappingType2];
-        const eventColor2 = getEventColor(eventType) || mappingColor2 || '#eb4034';
+  if (dataProvider2.rows) {
+    dataProvider2.rows.forEach(event => {
+      const eventType = event[mappingType2];
+      const eventColor2 = getEventColor(eventType) || mappingColor2 || '#eb4034';
 
-        eventsList.push({
-          title: event[mappingTitle2],
-          date: event[mappingDate2],
-          start: event[mappingStart2],
-          end: event[mappingEnd2],
-          color: eventColor2,
-          event: event,
-          allDay: allday2,
-        });
+      eventsList.push({
+        title: event[mappingTitle2],
+        date: event[mappingDate2],
+        start: event[mappingStart2],
+        end: event[mappingEnd2],
+        color: eventColor2, // Usa il colore determinato dal tipo
+        event: event,
+        allDay: allday2,
       });
-    }
+    });
+  }
 
-    eventsList = eventsList; // Trigger Svelte reattività
-  });
+  eventsList = eventsList; // Trigger Svelte reattivity
+});
 
   let options = {
     headerToolbar: {

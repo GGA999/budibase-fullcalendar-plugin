@@ -38,6 +38,12 @@
             "label": "End Mapping"
           },
           {
+            "type": "text",
+            "key": "mappingType",
+            "label": "Type Mapping",
+            "placeholder": "Column for event type (e.g., meeting, sick leave)"
+          },
+          {
             "type": "boolean",
             "key": "allday",
             "label": "AllDay Mapping"
@@ -106,6 +112,12 @@
             "label": "End Mapping"
           },
           {
+            "type": "text",
+            "key": "mappingType2",
+            "label": "Type Mapping (Group 2)",
+            "placeholder": "Column for event type (e.g., meeting, sick leave)"
+          },
+          {
             "type": "boolean",
             "key": "allday2",
             "label": "AllDay Mapping"
@@ -148,13 +160,7 @@
           {
             "type": "select",
             "key": "language",
-            "options": [
-              "pt",
-              "en",
-              "fr",
-              "es",
-              "ru"
-            ],
+            "options": ["pt", "en", "fr", "es", "ru"],
             "label": "language",
             "defaultValue": "pt"
           },
