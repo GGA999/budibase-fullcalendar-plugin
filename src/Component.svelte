@@ -40,7 +40,7 @@
   export let headerOptionsEnd = 'dayGridMonth,timeGridWeek,listWeek';
 
   let eventsList = [];
-
+  const safeGet = (obj, key, defaultValue) => obj?.[key] ?? defaultValue;
   onMount(() => {
     if (eventsList.length > 0) {
       eventsList = [];
@@ -54,17 +54,16 @@
 
     if (dataProvider?.rows?.length > 0) {
       dataProvider.rows.forEach((event) => {
-        event.type = event[mappingType] || 'default'; // Aggiungi questa riga
-        const eventType = event.type; // Utilizza la proprietà type dell'oggetto event
+        const eventType = safeGet(event, mappingType, 'default');
         const eventColor =
           getEventColor(eventType) || mappingColor || '#313131';
 
         eventsList.push({
-          title: event[mappingTitle] || 'Untitled Event',
-          date: event[mappingDate] || new Date().toISOString(),
-          start: event[mappingStart] || new Date().toISOString(),
-          end: event[mappingEnd] || new Date().toISOString(),
-          color: eventColor, // Usa il colore determinato dal tipo
+          title: safeGet(event, mappingTitle, 'Untitled Event'),
+          date: safeGet(event, mappingDate, new Date().toISOString()),
+          start: safeGet(event, mappingStart, new Date().toISOString()),
+          end: safeGet(event, mappingEnd, new Date().toISOString()),
+          color: eventColor,
           event: event,
           allDay: allday ?? false,
         });
@@ -73,16 +72,16 @@
 
     if (dataProvider2?.rows?.length > 0) {
       dataProvider2.rows.forEach((event) => {
-        const eventType = event[mappingType2] || 'default';
+        const eventType = safeGet(event, mappingType2, 'default');
         const eventColor2 =
           getEventColor(eventType) || mappingColor2 || '#eb4034';
 
         eventsList.push({
-          title: event[mappingTitle2] || 'Untitled Event',
-          date: event[mappingDate2] || new Date().toISOString(),
-          start: event[mappingStart2] || new Date().toISOString(),
-          end: event[mappingEnd2] || new Date().toISOString(),
-          color: eventColor2, // Usa il colore determinato dal tipo
+          title: safeGet(event, mappingTitle2, 'Untitled Event'),
+          date: safeGet(event, mappingDate2, new Date().toISOString()),
+          start: safeGet(event, mappingStart2, new Date().toISOString()),
+          end: safeGet(event, mappingEnd2, new Date().toISOString()),
+          color: eventColor2,
           event: event,
           allDay: allday2 ?? false,
         });

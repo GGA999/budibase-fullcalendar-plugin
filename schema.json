@@ -4,7 +4,7 @@
   "schema": {
     "name": "budibase-fullcalendar",
     "friendlyName": "FullCalendar",
-    "description": "simple calendar component for budibase",
+    "description": "Simple calendar component for Budibase",
     "icon": "Calendar",
     "settings": [
       {
@@ -15,38 +15,55 @@
             "type": "dataProvider",
             "label": "DataProvider",
             "key": "dataProvider",
-            "required": true
+            "required": false,
+            "defaultValue": {
+              "rows": [
+                {
+                  "title": "Sample Event",
+                  "type": "default",
+                  "date": "2023-12-03",
+                  "start": "2023-12-03T10:00:00",
+                  "end": "2023-12-03T12:00:00"
+                }
+              ]
+            }
           },
           {
             "type": "text",
             "key": "mappingTitle",
-            "label": "Title Mapping"
+            "label": "Title Mapping",
+            "defaultValue": "title"
           },
           {
             "type": "text",
             "key": "mappingDate",
-            "label": "Date Mapping"
+            "label": "Date Mapping",
+            "defaultValue": "date"
           },
           {
             "type": "text",
             "key": "mappingStart",
-            "label": "Start Mapping"
+            "label": "Start Mapping",
+            "defaultValue": "start"
           },
           {
             "type": "text",
             "key": "mappingEnd",
-            "label": "End Mapping"
+            "label": "End Mapping",
+            "defaultValue": "end"
           },
           {
             "type": "text",
             "key": "mappingType",
             "label": "Type Mapping",
+            "defaultValue": "type",
             "placeholder": "Column for event type (e.g., meeting, sick leave)"
           },
           {
             "type": "boolean",
             "key": "allday",
-            "label": "AllDay Mapping"
+            "label": "AllDay Mapping",
+            "defaultValue": false
           },
           {
             "type": "color",
@@ -62,6 +79,11 @@
                 "type": "array",
                 "label": "Event Types and Colors",
                 "key": "eventTypes",
+                "defaultValue": [
+                  { "name": "default", "color": "#378006" },
+                  { "name": "meeting", "color": "#ff0000" },
+                  { "name": "holiday", "color": "#00ff00" }
+                ],
                 "fields": [
                   {
                     "type": "text",
@@ -87,44 +109,52 @@
         "settings": [
           {
             "type": "dataProvider",
-            "label": "DataProvider",
+            "label": "DataProvider 2",
             "key": "dataProvider2",
-            "required": false
+            "required": false,
+            "defaultValue": {
+              "rows": []
+            }
           },
           {
             "type": "text",
             "key": "mappingTitle2",
-            "label": "Title Mapping"
+            "label": "Title Mapping (Group 2)",
+            "defaultValue": "title"
           },
           {
             "type": "text",
             "key": "mappingDate2",
-            "label": "Date Mapping"
+            "label": "Date Mapping (Group 2)",
+            "defaultValue": "date"
           },
           {
             "type": "text",
             "key": "mappingStart2",
-            "label": "Start Mapping"
+            "label": "Start Mapping (Group 2)",
+            "defaultValue": "start"
           },
           {
             "type": "text",
             "key": "mappingEnd2",
-            "label": "End Mapping"
+            "label": "End Mapping (Group 2)",
+            "defaultValue": "end"
           },
           {
             "type": "text",
             "key": "mappingType2",
             "label": "Type Mapping (Group 2)",
-            "placeholder": "Column for event type (e.g., meeting, sick leave)"
+            "defaultValue": "type"
           },
           {
             "type": "boolean",
             "key": "allday2",
-            "label": "AllDay Mapping"
+            "label": "AllDay Mapping (Group 2)",
+            "defaultValue": false
           },
           {
             "type": "color",
-            "label": "Color Mapping",
+            "label": "Color Mapping (Group 2)",
             "key": "mappingColor2",
             "defaultValue": "#000"
           }
@@ -150,7 +180,7 @@
             "type": "text",
             "label": "End Options",
             "key": "headerOptionsEnd",
-            "defaultValue": "dayGridMonth,dayGridWeek,timeGridDay"
+            "defaultValue": "dayGridMonth,timeGridWeek,listWeek"
           }
         ]
       },
@@ -161,12 +191,12 @@
             "type": "select",
             "key": "language",
             "options": ["pt", "en", "fr", "es", "ru"],
-            "label": "language",
-            "defaultValue": "pt"
+            "label": "Language",
+            "defaultValue": "en"
           },
           {
             "type": "event",
-            "label": "On Click",
+            "label": "On Event Click",
             "key": "calendarEvent",
             "context": [
               {
