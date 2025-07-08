@@ -1,107 +1,61 @@
 <script>
-  import { getContext } from 'svelte';
+  import { getContext } from "svelte";
   import '@fullcalendar/core/locales-all';
   import FullCalendar from 'svelte-fullcalendar';
   import daygridPlugin from '@fullcalendar/daygrid';
   import timeGridPlugin from '@fullcalendar/timegrid';
   import listPlugin from '@fullcalendar/list';
-  import { onMount } from 'svelte';
-  import { langs, codeLang } from './lang';
+  import { onMount } from "svelte";
+  import { langs, codeLang } from "./lang";
 
-  export let eventTypes = [];
-  export let language = 'en';
-  export let calendarEvent = () => {};
+  export let language;
+  export let calendarEvent;
+  export let mappingTitle;
+  export let mappingDate;
+  export let mappingStart;
+  export let mappingEnd;
+  export let dataProvider;
+  export let mappingColor;
+  export let allday;
 
-  export let mappingTitle = 'title';
-  export let mappingDate = 'date';
-  export let mappingStart = 'start';
-  export let mappingEnd = 'end';
-
-  export let mappingTitle2 = 'title';
-  export let mappingDate2 = 'date';
-  export let mappingStart2 = 'start';
-  export let mappingEnd2 = 'end';
-
-  export let dataProvider = { rows: [] };
-  export let dataProvider2 = { rows: [] };
-
-  export let mappingType = 'type';
-  export let mappingType2 = 'type';
-
-  export let mappingColor = '#272727';
-  export let mappingColor2 = '#272727';
-
-  export let allday = false;
-  export let allday2 = false;
-
-  export let headerOptionsStart = 'prev,next today';
-  export let headerOptionsCenter = 'title';
-  export let headerOptionsEnd = 'dayGridMonth,timeGridWeek,listWeek';
+  // 🔥 Nuovo mapping dinamico dei colori
+  export let typeColorMapping = [];
 
   let eventsList = [];
-  const safeGet = (obj, key, defaultValue) => obj?.[key] ?? defaultValue;
-onMount(() => {
-  if (eventsList.length > 0) {
-    eventsList = [];
+
+  function generateColorMap() {
+    return typeColorMapping.reduce((acc, item) => {
+      acc[item.type] = item.color;
+      return acc;
+    }, {});
   }
 
-  const getEventColor = (type) => {
-    if (!type) type = 'default';
-    const typeObj = eventTypes.find((eventType) => eventType.name === type);
-    return typeObj ? typeObj.color : '#313131';
-  };
+  function buildEvents() {
+    const colorMap = generateColorMap();
+    eventsList = [];
 
-  const fallbackEvents = [
-    {
-      title: "Sample Event",
-      date: "2023-12-03",
-      start: "2023-12-03T10:00:00",
-      end: "2023-12-03T12:00:00",
-      type: "default"
-    }
-  ];
+    if (dataProvider?.rows) {
+      dataProvider.rows.forEach(event => {
+        const eventType = event.type;
+        const eventColor = colorMap[eventType] || mappingColor || '#313131';
 
-  const processDataProvider = (dataProvider, mapping) => {
-    const rows = dataProvider?.rows?.length > 0 ? dataProvider.rows : fallbackEvents;
-
-    rows.forEach((event) => {
-      const eventType = safeGet(event, mapping.type, 'default');
-      const eventColor = getEventColor(eventType);
-
-      eventsList.push({
-        title: safeGet(event, mapping.title, 'Untitled Event'),
-        date: safeGet(event, mapping.date, new Date().toISOString()),
-        start: safeGet(event, mapping.start, new Date().toISOString()),
-        end: safeGet(event, mapping.end, new Date().toISOString()),
-        color: eventColor,
-        event: event,
-        allDay: mapping.allDay ?? false,
+        eventsList.push({
+          title: event[mappingTitle],
+          date: event[mappingDate],
+          start: event[mappingStart],
+          end: event[mappingEnd],
+          color: eventColor,
+          event,
+          allDay: allday,
+        });
       });
-    });
-  };
+    }
+  }
 
-  processDataProvider(dataProvider, {
-    type: mappingType,
-    title: mappingTitle,
-    date: mappingDate,
-    start: mappingStart,
-    end: mappingEnd,
-    color: mappingColor,
-    allDay: allday
-  });
+  onMount(buildEvents);
 
-  processDataProvider(dataProvider2, {
-    type: mappingType2,
-    title: mappingTitle2,
-    date: mappingDate2,
-    start: mappingStart2,
-    end: mappingEnd2,
-    color: mappingColor2,
-    allDay: allday2
-  });
-
-  eventsList = eventsList;
-});
+  // 🔄 Quando cambiano i dati, aggiorna la lista eventi
+  $: dataProvider, typeColorMapping, mappingColor, buildEvents();
 
   let options = {
     headerToolbar: {
@@ -114,10 +68,7 @@ onMount(() => {
     locale: language,
     dayMaxEvents: true,
     eventClick: (event) => {
-      calendarEvent({
-        value: event.event,
-      });
-      console.log(event.event.title);
+      calendarEvent({ value: event.event });
     },
     events: eventsList,
     eventColor: '#378006',
@@ -125,8 +76,12 @@ onMount(() => {
     ...langs[codeLang(language)],
   };
 
-  const { styleable } = getContext('sdk');
-  const component = getContext('component');
+  export let headerOptionsStart;
+  export let headerOptionsCenter;
+  export let headerOptionsEnd;
+
+  const { styleable } = getContext("sdk");
+  const component = getContext("component");
 </script>
 
 <div use:styleable={$component.styles}>

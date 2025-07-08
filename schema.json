@@ -4,159 +4,67 @@
   "schema": {
     "name": "budibase-fullcalendar",
     "friendlyName": "FullCalendar",
-    "description": "Simple calendar component for Budibase",
+    "description": "simple calendar component for budibase",
     "icon": "Calendar",
     "settings": [
       {
         "section": true,
-        "name": "Event Group 1",
+        "name": "Event Group",
         "settings": [
           {
             "type": "dataProvider",
             "label": "DataProvider",
             "key": "dataProvider",
-            "required": false,
-            "defaultValue": {
-              "rows": [
-                {
-                  "title": "Sample Event",
-                  "type": "default",
-                  "date": "2023-12-03",
-                  "start": "2023-12-03T10:00:00",
-                  "end": "2023-12-03T12:00:00"
-                }
-              ]
-            }
+            "required": true
           },
           {
             "type": "text",
             "key": "mappingTitle",
-            "label": "Title Mapping",
-            "defaultValue": "title"
+            "label": "Title Mapping"
           },
           {
             "type": "text",
             "key": "mappingDate",
-            "label": "Date Mapping",
-            "defaultValue": "date"
+            "label": "Date Mapping"
           },
           {
             "type": "text",
             "key": "mappingStart",
-            "label": "Start Mapping",
-            "defaultValue": "start"
+            "label": "Start Mapping"
           },
           {
             "type": "text",
             "key": "mappingEnd",
-            "label": "End Mapping",
-            "defaultValue": "end"
-          },
-          {
-            "type": "text",
-            "key": "mappingType",
-            "label": "Type Mapping",
-            "defaultValue": "type",
-            "placeholder": "Column for event type (e.g., meeting, sick leave)"
+            "label": "End Mapping"
           },
           {
             "type": "boolean",
             "key": "allday",
-            "label": "AllDay Mapping",
-            "defaultValue": false
+            "label": "AllDay Mapping"
           },
           {
             "type": "color",
-            "label": "Color Mapping",
+            "label": "Default Color Mapping",
             "key": "mappingColor",
             "defaultValue": "#272727"
           },
           {
-            "section": true,
-            "name": "Event Types (Colors)",
-            "settings": [
-              {
-                "type": "array",
-                "label": "Event Types and Colors",
-                "key": "eventTypes",
-                "defaultValue": [
-                  { "name": "default", "color": "#378006" },
-                  { "name": "meeting", "color": "#ff0000" },
-                  { "name": "holiday", "color": "#00ff00" }
-                ],
-                "fields": [
-                  {
-                    "type": "text",
-                    "key": "name",
-                    "label": "Event Type Name",
-                    "placeholder": "E.g., meeting, holiday"
-                  },
-                  {
-                    "type": "color",
-                    "key": "color",
-                    "label": "Event Type Color",
-                    "defaultValue": "#378006"
-                  }
-                ]
+            "type": "array",
+            "key": "typeColorMapping",
+            "label": "Type Color Mapping",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "text",
+                  "label": "Type"
+                },
+                "color": {
+                  "type": "color",
+                  "label": "Color"
+                }
               }
-            ]
-          }
-        ]
-      },
-      {
-        "section": true,
-        "name": "Event Group 2",
-        "settings": [
-          {
-            "type": "dataProvider",
-            "label": "DataProvider 2",
-            "key": "dataProvider2",
-            "required": false,
-            "defaultValue": {
-              "rows": []
             }
-          },
-          {
-            "type": "text",
-            "key": "mappingTitle2",
-            "label": "Title Mapping (Group 2)",
-            "defaultValue": "title"
-          },
-          {
-            "type": "text",
-            "key": "mappingDate2",
-            "label": "Date Mapping (Group 2)",
-            "defaultValue": "date"
-          },
-          {
-            "type": "text",
-            "key": "mappingStart2",
-            "label": "Start Mapping (Group 2)",
-            "defaultValue": "start"
-          },
-          {
-            "type": "text",
-            "key": "mappingEnd2",
-            "label": "End Mapping (Group 2)",
-            "defaultValue": "end"
-          },
-          {
-            "type": "text",
-            "key": "mappingType2",
-            "label": "Type Mapping (Group 2)",
-            "defaultValue": "type"
-          },
-          {
-            "type": "boolean",
-            "key": "allday2",
-            "label": "AllDay Mapping (Group 2)",
-            "defaultValue": false
-          },
-          {
-            "type": "color",
-            "label": "Color Mapping (Group 2)",
-            "key": "mappingColor2",
-            "defaultValue": "#000"
           }
         ]
       },
@@ -172,15 +80,13 @@
           },
           {
             "type": "text",
-            "label": "Center Options",
             "key": "headerOptionsCenter",
             "defaultValue": "title"
           },
           {
             "type": "text",
-            "label": "End Options",
             "key": "headerOptionsEnd",
-            "defaultValue": "dayGridMonth,timeGridWeek,listWeek"
+            "defaultValue": "dayGridMonth,dayGridWeek,timeGridDay"
           }
         ]
       },
@@ -190,13 +96,19 @@
           {
             "type": "select",
             "key": "language",
-            "options": ["pt", "en", "fr", "es", "ru"],
-            "label": "Language",
-            "defaultValue": "en"
+            "options": [
+              "pt",
+              "en",
+              "fr",
+              "es",
+              "ru"
+            ],
+            "label": "language",
+            "defaultValue": "pt"
           },
           {
             "type": "event",
-            "label": "On Event Click",
+            "label": "On Click",
             "key": "calendarEvent",
             "context": [
               {
