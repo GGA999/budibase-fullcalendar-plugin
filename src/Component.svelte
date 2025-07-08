@@ -23,6 +23,9 @@
   export let headerOptionsCenter;
   export let headerOptionsEnd;
 
+  export let mappingType;
+
+
   let eventsList = [];
 
   function generateColorMap() {
@@ -35,27 +38,34 @@
     return map;
   }
 
-  function buildEvents() {
-    const colorMap = generateColorMap();
-    const newEvents = [];
-
-    if (dataProvider?.rows) {
-      dataProvider.rows.forEach(event => {
-        const type = event.type;
-        const eventColor = colorMap[type] || mappingColor || '#313131';
-        newEvents.push({
-          title: event[mappingTitle],
-          start: event[mappingStart] || event[mappingDate],
-          end: event[mappingEnd],
-          color: eventColor,
-          allDay: allday,
-          event
-        });
-      });
+function buildEvents() {
+  const colorMap = {};
+  (typeColorMapping || []).forEach(item => {
+    if (item?.type && item?.color) {
+      colorMap[item.type] = item.color;
     }
+  });
 
-    eventsList = newEvents;
+  const newEvents = [];
+
+  if (dataProvider?.rows) {
+    dataProvider.rows.forEach(event => {
+      const type = event[mappingType];
+      const eventColor = colorMap[type] || mappingColor || '#313131';
+
+      newEvents.push({
+        title: event[mappingTitle],
+        start: event[mappingStart] || event[mappingDate],
+        end: event[mappingEnd],
+        color: eventColor,
+        allDay: allday,
+        event
+      });
+    });
   }
+
+  eventsList = newEvents;
+}
 
   // Costruisce gli eventi all'inizio
   onMount(() => {

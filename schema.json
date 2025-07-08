@@ -70,6 +70,35 @@
       },
       {
         "section": true,
+        "name": "Type/Color Mapping",
+        "settings": [
+          {
+            "type": "text",
+            "key": "mappingType",
+            "label": "Type Mapping",
+            "required": false
+          },
+          {
+            "type": "repeater",
+            "key": "typeColorMapping",
+            "label": "Type Color Mapping",
+            "settings": [
+              {
+                "type": "text",
+                "key": "type",
+                "label": "Type"
+              },
+              {
+                "type": "color",
+                "key": "color",
+                "label": "Color"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "section": true,
         "name": "Header options",
         "settings": [
           {
@@ -96,13 +125,7 @@
           {
             "type": "select",
             "key": "language",
-            "options": [
-              "pt",
-              "en",
-              "fr",
-              "es",
-              "ru"
-            ],
+            "options": ["pt", "en", "fr", "es", "ru"],
             "label": "language",
             "defaultValue": "pt"
           },
