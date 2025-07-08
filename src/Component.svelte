@@ -10,35 +10,34 @@
 
   // Nuovo prop per il mapping dei tipi di evento con i colori
   export let eventTypes = []; // [{ name: 'meeting', color: '#ff0000' }, ...]
+  export let language = 'en';
+  export let calendarEvent = () => {};
 
-  export let language;
-  export let calendarEvent;
+  export let mappingTitle = 'title';
+  export let mappingDate = 'date';
+  export let mappingStart = 'start';
+  export let mappingEnd = 'end';
 
-  export let mappingTitle;
-  export let mappingDate;
-  export let mappingStart;
-  export let mappingEnd;
+  export let mappingTitle2 = 'title';
+  export let mappingDate2 = 'date';
+  export let mappingStart2 = 'start';
+  export let mappingEnd2 = 'end';
 
-  export let mappingTitle2;
-  export let mappingDate2;
-  export let mappingStart2;
-  export let mappingEnd2;
+  export let dataProvider = { rows: [] };
+  export let dataProvider2 = { rows: [] };
 
-  export let dataProvider;
-  export let dataProvider2;
+  export let mappingType = 'type'; // Nuovo: Associazione del tipo di evento
+  export let mappingType2 = 'type'; // Nuovo: Per il secondo dataProvider
 
-  export let mappingType; // Nuovo: Associazione del tipo di evento
-  export let mappingType2; // Nuovo: Per il secondo dataProvider
+  export let mappingColor = '#272727';
+  export let mappingColor2 = '#272727';
 
-  export let mappingColor;
-  export let mappingColor2;
+  export let allday = false;
+  export let allday2 = false;
 
-  export let allday;
-  export let allday2;
-
-  export let headerOptionsStart;
-  export let headerOptionsCenter;
-  export let headerOptionsEnd;
+  export let headerOptionsStart = 'prev,next today';
+  export let headerOptionsCenter = 'title';
+  export let headerOptionsEnd = 'dayGridMonth,timeGridWeek,listWeek';
 
   let eventsList = [];
 
@@ -48,41 +47,43 @@ onMount(() => {
   }
 
   const getEventColor = (type) => {
-    // Trova il tipo e restituisci il colore associato
+    if (!type) type = 'default'; // Fallback in caso il tipo non sia fornito
     const typeObj = eventTypes.find(eventType => eventType.name === type);
     return typeObj ? typeObj.color : '#313131'; // Default se il tipo non è trovato
   };
 
-  if (dataProvider.rows) {
+  if (dataProvider?.rows?.length > 0) {
+
     dataProvider.rows.forEach(event => {
-      const eventType = event[mappingType]; // Determiniamo il tipo di evento
+      const eventType = event[mappingType] || 'default'; // Determiniamo il tipo di evento
       const eventColor = getEventColor(eventType) || mappingColor || '#313131';
 
       eventsList.push({
-        title: event[mappingTitle],
-        date: event[mappingDate],
-        start: event[mappingStart],
-        end: event[mappingEnd],
+        title: event[mappingTitle] || 'Untitled Event',
+        date: event[mappingDate] || new Date().toISOString(),
+        start: event[mappingStart] || new Date().toISOString(),
+        end: event[mappingEnd] || new Date().toISOString(),
         color: eventColor, // Usa il colore determinato dal tipo
         event: event,
-        allDay: allday,
+        allDay: allday ?? false,
       });
     });
   }
 
-  if (dataProvider2.rows) {
+  if (dataProvider2?.rows?.length > 0) {
+
     dataProvider2.rows.forEach(event => {
-      const eventType = event[mappingType2];
+      const eventType = event[mappingType2] || 'default';
       const eventColor2 = getEventColor(eventType) || mappingColor2 || '#eb4034';
 
       eventsList.push({
-        title: event[mappingTitle2],
-        date: event[mappingDate2],
-        start: event[mappingStart2],
-        end: event[mappingEnd2],
+        title: event[mappingTitle2] || 'Untitled Event',
+        date: event[mappingDate2] || new Date().toISOString(),
+        start: event[mappingStart2] || new Date().toISOString(),
+        end: event[mappingEnd2] || new Date().toISOString(),
         color: eventColor2, // Usa il colore determinato dal tipo
         event: event,
-        allDay: allday2,
+        allDay: allday2 ?? false,
       });
     });
   }
