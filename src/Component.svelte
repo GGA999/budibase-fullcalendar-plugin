@@ -10,6 +10,7 @@
 
   export let language;
   export let calendarEvent;
+  export let onCreateEvent;
   export let mappingTitle;
   export let mappingDate;
   export let mappingStart;
@@ -35,7 +36,7 @@
       title: event[mappingTitle],
       start: event[mappingStart] || event[mappingDate],
       end: event[mappingEnd],
-      color: event[colorMapping] || '#313131', // colore preso dalla colonna del provider
+      color: event[colorMapping] || '#313131',
       allDay: allday,
       event,
     }));
@@ -43,7 +44,7 @@
     eventsList = newEvents;
   }
 
-  // Reattività su dataProvider.rows, colorMapping e typeColorMapping
+
   $: dataProvider?.rows, buildEvents();
   $: colorMapping, buildEvents();
   $: typeColorMapping, buildEvents();
@@ -63,7 +64,7 @@
     eventClick: (info) =>
       calendarEvent({ value: info.event.extendedProps.event }),
     dateClick: (info) =>
-      onCreateEvent({ date: info.dateStr, allDay: info.allDay }),
+      onCreateEvent?.({ date: info.dateStr, allDay: info.allDay }),
     events: eventsList,
     theme: true,
     ...langs[codeLang(language)],
