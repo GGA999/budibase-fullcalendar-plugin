@@ -34,7 +34,7 @@
       title: event[mappingTitle],
       start: event[mappingStart] || event[mappingDate],
       end: event[mappingEnd],
-      color: event[colorMapping] || '#313131', // colore preso dalla colonna del provider
+      color: event[colorMapping] || '#313131',
       allDay: allday,
       event
     }));
@@ -42,7 +42,6 @@
     eventsList = newEvents;
   }
 
-  // Reattività su dataProvider.rows, colorMapping e typeColorMapping
   $: dataProvider?.rows, buildEvents();
   $: colorMapping, buildEvents();
   $: typeColorMapping, buildEvents();
