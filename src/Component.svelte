@@ -23,48 +23,32 @@
   export let headerOptionsCenter;
   export let headerOptionsEnd;
 
-
   let eventsList = [];
 
-  function generateColorMap() {
-    const map = {};
-    (typeColorMapping || []).forEach(item => {
-      if (item?.type && item?.color) {
-        map[item.type] = item.color;
-      }
-    });
-    return map;
+  function buildEvents() {
+    if (!dataProvider?.rows) {
+      eventsList = [];
+      return;
+    }
+
+    const newEvents = dataProvider.rows.map(event => ({
+      title: event[mappingTitle],
+      start: event[mappingStart] || event[mappingDate],
+      end: event[mappingEnd],
+      color: event[colorMapping] || '#313131', // colore preso dalla colonna del provider
+      allDay: allday,
+      event
+    }));
+
+    eventsList = newEvents;
   }
 
-function buildEvents() {
-  const newEvents = [];
+  // Reattività su dataProvider.rows, colorMapping e typeColorMapping
+  $: dataProvider?.rows, buildEvents();
+  $: colorMapping, buildEvents();
+  $: typeColorMapping, buildEvents();
 
-  if (dataProvider?.rows) {
-    dataProvider.rows.forEach(event => {
-      newEvents.push({
-        title: event[mappingTitle],
-        start: event[mappingStart] || event[mappingDate],
-        end: event[mappingEnd],
-        color: event[colorMapping] || '#313131', // prende il colore dalla colonna, fallback se mancante
-        allDay: allday,
-        event
-      });
-    });
-  }
-
-  eventsList = newEvents;
-}
-
-  // Costruisce gli eventi all'inizio
-  onMount(() => {
-    buildEvents();
-  });
-
-  // Ricostruisce quando cambia il dataProvider o la mappatura dei colori
-  $: if (dataProvider || typeColorMapping) {
-    buildEvents();
-  }
-
+  // Opzioni FullCalendar reattive
   let options;
   $: options = {
     headerToolbar: {
