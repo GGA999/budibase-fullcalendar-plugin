@@ -120,15 +120,6 @@
                 "key": "value"
               }
             ]
-          },
-          {
-            "type": "event",
-            "label": "On Create Event",
-            "key": "onCreateEvent",
-            "context": [
-              { "label": "Selected Date", "key": "date" },
-              { "label": "All Day", "key": "allDay" }
-            ]
           }
         ]
       }

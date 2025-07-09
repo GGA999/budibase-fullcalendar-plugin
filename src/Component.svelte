@@ -1,16 +1,14 @@
 <script>
-  import { getContext } from 'svelte';
+  import { getContext } from "svelte";
   import '@fullcalendar/core/locales-all';
   import FullCalendar from 'svelte-fullcalendar';
   import daygridPlugin from '@fullcalendar/daygrid';
   import timeGridPlugin from '@fullcalendar/timegrid';
   import listPlugin from '@fullcalendar/list';
-  import { langs, codeLang } from './lang';
-  import interactionPlugin from '@fullcalendar/interaction';
+  import { langs, codeLang } from "./lang";
 
   export let language;
   export let calendarEvent;
-  export let onCreateEvent;
   export let mappingTitle;
   export let mappingDate;
   export let mappingStart;
@@ -32,19 +30,19 @@
       return;
     }
 
-    const newEvents = dataProvider.rows.map((event) => ({
+    const newEvents = dataProvider.rows.map(event => ({
       title: event[mappingTitle],
       start: event[mappingStart] || event[mappingDate],
       end: event[mappingEnd],
-      color: event[colorMapping] || '#313131',
+      color: event[colorMapping] || '#313131', // colore preso dalla colonna del provider
       allDay: allday,
-      event,
+      event
     }));
 
     eventsList = newEvents;
   }
 
-
+  // Reattività su dataProvider.rows, colorMapping e typeColorMapping
   $: dataProvider?.rows, buildEvents();
   $: colorMapping, buildEvents();
   $: typeColorMapping, buildEvents();
@@ -55,23 +53,20 @@
     headerToolbar: {
       start: headerOptionsStart,
       center: headerOptionsCenter,
-      end: headerOptionsEnd,
+      end: headerOptionsEnd
     },
-    plugins: [daygridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
+    plugins: [daygridPlugin, timeGridPlugin, listPlugin],
+    initialDate: new Date().toISOString().substring(0, 10),
     locale: language,
     dayMaxEvents: true,
-    initialDate: new Date().toISOString().substring(0, 10),
-    eventClick: (info) =>
-      calendarEvent({ value: info.event.extendedProps.event }),
-    dateClick: (info) =>
-      onCreateEvent?.({ date: info.dateStr, allDay: info.allDay }),
+    eventClick: info => calendarEvent({ value: info.event.extendedProps.event }),
     events: eventsList,
     theme: true,
-    ...langs[codeLang(language)],
+    ...langs[codeLang(language)]
   };
 
-  const { styleable } = getContext('sdk');
-  const component = getContext('component');
+  const { styleable } = getContext("sdk");
+  const component = getContext("component");
 </script>
 
 <div use:styleable={$component.styles}>
